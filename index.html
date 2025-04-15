@@ -1,363 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IDEA Coin Explore Page</title>
-    <style>
-        /* --- General Styles --- */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f7f6;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IDEA Coin Explore Page</title>
+  <style>
+    :root {
+      --bg-color: #f4f7f6;
+      --text-color: #333;
+      --card-bg: #fff;
+      --accent-color: #1abc9c;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    body.dark-mode {
+      --bg-color: #1f2a30;
+      --text-color: #eee;
+      --card-bg: #2e3b44;
+      --shadow-color: rgba(255, 255, 255, 0.1);
+    }
 
-        h1, h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-        h1 .symbol {
-            font-weight: bold;
-            color: #1abc9c; /* Teal color for the symbol */
-            font-size: 1.2em;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px var(--shadow-color);
+      transition: background-color 0.3s ease;
+    }
 
-        /* --- Filter Controls --- */
-        .filter-controls {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
 
-        .filter-controls label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
+    h1 .symbol {
+      font-weight: bold;
+      color: var(--accent-color);
+      font-size: 1.2em;
+    }
 
-        .filter-controls input[type="text"] {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-right: 20px;
-            min-width: 200px;
-        }
+    .filter-controls {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
 
-        .filter-button {
-            padding: 8px 15px;
-            margin: 0 5px;
-            cursor: pointer;
-            border: 1px solid #1abc9c;
-            background-color: #fff;
-            color: #1abc9c;
-            border-radius: 4px;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    .filter-controls label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
 
-        .filter-button:hover,
-        .filter-button.active {
-            background-color: #1abc9c;
-            color: #fff;
-        }
+    .filter-controls input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 20px;
+      min-width: 200px;
+    }
 
-        /* --- Card Grid --- */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
-            gap: 20px;
-            margin-top: 20px;
-        }
+    .filter-button {
+      padding: 8px 15px;
+      margin: 0 5px;
+      cursor: pointer;
+      border: 1px solid var(--accent-color);
+      background-color: transparent;
+      color: var(--accent-color);
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
 
-        .card {
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 15px;
-            background-color: #fff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Pushes amount to bottom */
-        }
+    .filter-button:hover,
+    .filter-button.active {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
 
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .theme-toggle {
+      margin-top: 10px;
+      font-size: 0.9em;
+      cursor: pointer;
+      color: var(--accent-color);
+      text-align: center;
+    }
 
-        .card-type {
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: inline-block; /* So it doesn't take full width */
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
 
-        .card-type-earn { background-color: #e8f8f5; color: #1abc9c; }
-        .card-type-lose { background-color: #fdedec; color: #e74c3c; }
-        .card-type-shop { background-color: #ebf5fb; color: #3498db; }
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px;
+      background-color: var(--card-bg);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+      position: relative;
+    }
 
-        .card-description {
-            flex-grow: 1; /* Takes available space */
-            margin-bottom: 10px;
-            font-size: 0.95em;
-        }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
 
-        .card-amount {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: #2c3e50;
-            text-align: right; /* Align amount to the right */
-        }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
 
-        .card-amount .symbol {
-            color: #1abc9c;
-            font-weight: bold;
-        }
+    .card-type {
+      font-size: 0.8em;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-        .card-note {
-            font-size: 0.8em;
-            color: #7f8c8d;
-            margin-top: 5px;
-            font-style: italic;
-        }
+    .card-type-earn { background-color: #e8f8f5; color: #1abc9c; }
+    .card-type-lose { background-color: #fdedec; color: #e74c3c; }
+    .card-type-shop { background-color: #ebf5fb; color: #3498db; }
 
-        /* --- No Results Message --- */
-        #no-results {
-            text-align: center;
-            padding: 20px;
-            color: #7f8c8d;
-            display: none; /* Hidden by default */
-            grid-column: 1 / -1; /* Span full grid width if shown */
-        }
+    .card-description {
+      flex-grow: 1;
+      margin-bottom: 10px;
+      font-size: 0.95em;
+    }
 
-        /* --- Responsive Adjustments --- */
-        @media (max-width: 600px) {
-            .filter-controls {
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .filter-controls input[type="text"] {
-                margin-right: 0;
-                margin-bottom: 10px;
-                width: auto; /* Take full width */
-            }
-            .filter-controls div { /* Container for buttons */
-                 display: flex;
-                 justify-content: center;
-                 flex-wrap: wrap; /* Wrap buttons if needed */
-                 gap: 5px;
-            }
-            .filter-button {
-                flex-grow: 1; /* Allow buttons to grow */
-                text-align: center;
-            }
-            .card-grid {
-                grid-template-columns: 1fr; /* Stack cards vertically */
-            }
-        }
-    </style>
+    .card-amount {
+      font-weight: bold;
+      font-size: 1.1em;
+      color: #2c3e50;
+      text-align: right;
+    }
+
+    .card-amount .symbol {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    .card-note {
+      font-size: 0.8em;
+      color: #7f8c8d;
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    .card:hover .card-note-tooltip {
+      display: block;
+    }
+
+    .card-note-tooltip {
+      display: none;
+      position: absolute;
+      top: -5px;
+      right: 5px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.75em;
+      white-space: nowrap;
+      z-index: 10;
+      color: #555;
+    }
+
+    #no-results {
+      text-align: center;
+      padding: 20px;
+      color: #7f8c8d;
+      display: none;
+      grid-column: 1 / -1;
+    }
+
+    #item-count {
+      text-align: center;
+      font-size: 0.9em;
+      color: #888;
+      margin-top: -15px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .filter-controls {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .filter-controls input[type="text"] {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: auto;
+      }
+      .filter-controls div {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+      .filter-button {
+        flex-grow: 1;
+        text-align: center;
+      }
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Welcome to the IDEA Coin <span class="symbol">i¢</span> Explore Page!</h1>
+    <p style="text-align: center;">Discover how to earn, potential fines, and what you can spend your hard-earned IDEA Coins on.</p>
 
-    <div class="container">
-        <h1>Welcome to the IDEA Coin <span class="symbol">i¢</span> Explore Page!</h1>
-        <p style="text-align: center;">Discover how to earn, potential fines, and what you can spend your hard-earned IDEA Coins on.</p>
-
-        <div class="filter-controls">
-            <label for="search-box">Search:</label>
-            <input type="text" id="search-box" placeholder="Filter items...">
-
-            <div> <!-- Button Group -->
-           <span style="font-size: .25em;">&nbsp;</span>
-                <button class="filter-button active" data-filter="all">Show All</button>
-                <button class="filter-button" data-filter="earn">How to Earn</button>
-                <button class="filter-button" data-filter="lose">How to Lose</button>
-                <button class="filter-button" data-filter="shop">IDEA Shop</button>
-            </div>
-        </div>
-
-        <h2>Explore Items</h2>
-        <div class="card-grid" id="card-grid">
-            <!-- Cards will be dynamically inserted here by JavaScript -->
-        </div>
-        <div id="no-results">No items match your filter criteria.</div>
+    <div class="filter-controls">
+      <label for="search-box">Search:</label>
+      <input type="text" id="search-box" placeholder="Filter items..." />
+      <div>
+        <button class="filter-button active" data-filter="all">Show All</button>
+        <button class="filter-button" data-filter="earn">How to Earn</button>
+        <button class="filter-button" data-filter="lose">How to Lose</button>
+        <button class="filter-button" data-filter="shop">IDEA Shop</button>
+      </div>
+      <div class="theme-toggle" id="theme-toggle"> Toggle Light/Dark Mode</div>
     </div>
 
-    <script>
-        const ideaItems = [
-            // --- How to Earn ---
-            { type: 'earn', description: 'Exceptional Performance / Doing More Than is Asked of You', amount: 1, unit: 'moment' },
-            { type: 'earn', description: 'Helping Peers', amount: 1, unit: 'moment' },
-            { type: 'earn', description: 'Weekly Income', amount: 1, unit: 'week' },
-            { type: 'earn', description: 'Perfect Assignment Score', amount: 1, unit: 'assignment' },
-            { type: 'earn', description: 'Speedrun Leaderboard Top 10', amount: 1, unit: 'speedrun' },
-            { type: 'earn', description: 'Answering Questions Correctly', amount: 1, unit: 'answer' },
-            { type: 'earn', description: 'Bounty Hunting / Fine Reporting / Policing', amount: 1, unit: 'bounty' },
-            { type: 'earn', description: 'Improve IDEA Coin Infrastructure', amount: 1, unit: 'minimum', note: 'At least 1i¢' },
-            { type: 'earn', description: 'Debt Collection (unofficial)', amount: 'Varies', unit: '', note: 'Unofficial mechanism' },
+    <div id="item-count"></div>
+    <h2>Explore Items</h2>
+    <div class="card-grid" id="card-grid"></div>
+    <div id="no-results">No items match your filter criteria.</div>
+  </div>
 
-            // --- How to Lose ---
-            { type: 'lose', description: 'Using any device for non school purposes without exemption', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Innapropriate / Disruptive Talking / Arguing / Touching', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Out of Seat During attendance', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Unsafe in shop', amount: 2, unit: 'fine' },
-            { type: 'lose', description: 'Extended Bathroom Break', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Failure to Return Flash Drive', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Failure to Return Headphones', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Inappropriate Phone Use', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Crashing Out', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Brain Rot', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Gambling', amount: 2, unit: 'fine' },
-            { type: 'lose', description: 'Planting Evidence', amount: 2, unit: 'fine' },
-            { type: 'lose', description: 'Tampering With the IDEA Coin Mint (known suspect)', amount: 10, unit: 'fine' },
-            { type: 'lose', description: 'Tampering With the IDEA Coin Mint (unknown suspect)', amount: 1, unit: 'fine', note: 'Fine applies to everyone' },
-            { type: 'lose', description: 'Failure to Clean Up in Shop', amount: 2, unit: 'fine' },
-            { type: 'lose', description: 'Eating in Classroom', amount: 1, unit: 'fine' },
-            { type: 'lose', description: 'Leaving Mess in Classroom', amount: 2, unit: 'fine' },
-            { type: 'lose', description: 'Unprofessional Conduct', amount: 1, unit: 'fine' },
+  <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-29.mp3" preload="auto"></audio>
 
-            // --- IDEA Shop ---
-            { type: 'shop', description: 'Extra Credit', amount: 1, unit: 'point' },
-            { type: 'shop', description: 'Exemption from turning in phone', amount: 1, unit: 'class' },
-            { type: 'shop', description: 'TA Helper Time', amount: 1, unit: '10 minutes' },
-            { type: 'shop', description: 'Song Requests', amount: 1, unit: 'song' },
-            { type: 'shop', description: 'Lower someone\'s grade', amount: 10, unit: 'point' },
-            { type: 'shop', description: 'In-N-Out combo', amount: 250, unit: 'Meal' },
-            { type: 'shop', description: 'Games During Downtime', amount: 1, unit: 'Class' },
-            { type: 'shop', description: 'Borrow Flash Drive', amount: 1, unit: 'borrow' },
-            { type: 'shop', description: 'Classroom Lighting Changes', amount: 1, unit: 'class' },
-            { type: 'shop', description: 'Assignment Ext.', amount: 2, unit: 'day' },
-            { type: 'shop', description: 'Free Period', amount: 30, unit: 'class or 10i¢/half hour' },
-            { type: 'shop', description: 'Switch Seat', amount: 10, unit: 'Switch' },
-            { type: 'shop', description: 'Mr. Pina does your work', amount: 1, unit: 'minute' },
-            { type: 'shop', description: 'Rent Gamer Chair', amount: 1, unit: 'Class' },
-            { type: 'shop', description: 'Brand New Stock Material', amount: 2, unit: 'lb' },
-            { type: 'shop', description: 'HIPS 3D Printing Filament', amount: 1, unit: '10g' },
-            { type: 'shop', description: '3D Print Queue Priority', amount: 1, unit: 'queue' },
-            { type: 'shop', description: 'Raise Weekly Wage', amount: '100*current wage', unit: 'raise 1i¢', note: 'Formula: 100 * Current Wage i¢ to raise wage by 1i¢' },
-            { type: 'shop', description: 'Change Someone Else\'s Seat', amount: 20, unit: 'Switch' },
-        ];
+  <script>
+    const ideaItems = [...]; // <-- Keep your full array here
 
-        const cardGrid = document.getElementById('card-grid');
-        const filterButtons = document.querySelectorAll('.filter-button');
-        const searchBox = document.getElementById('search-box');
-        const noResultsDiv = document.getElementById('no-results');
-        const symbol = 'i¢'; // Define symbol
-
-        function formatAmount(item) {
-            if (typeof item.amount === 'number') {
-                let amountStr = `${item.amount}<span class="symbol">${symbol}</span>`;
-                if (item.unit && item.unit !== 'fine' && item.unit !== 'minimum' && item.unit !== '') {
-                   // Add '/unit' only if unit is meaningful and not just 'fine' or empty
-                    if (['moment', 'week', 'assignment', 'speedrun', 'answer', 'bounty', 'point', 'class', '10 minutes', 'song', 'Meal', 'borrow', 'day', 'Switch', 'minute', 'lb', '10g', 'queue'].includes(item.unit)) {
-                         amountStr += `/${item.unit}`;
-                    } else if (item.unit === 'class or 10i¢/half hour') {
-                        amountStr += `/class (or 10${symbol}/half hr)`; // Special formatting
-                    } else if (item.unit === 'raise 1i¢') {
-                        // Handled by description and note, keep amount simple
-                        amountStr = `Formula`;
-                    }
-                }
-                 return amountStr;
-            }
-            // Handle non-numeric amounts like 'Varies' or formulas
-            return `${item.amount}`;
-        }
-
-        function renderCards(filterType = 'all', searchTerm = '') {
-            cardGrid.innerHTML = ''; // Clear existing cards
-            noResultsDiv.style.display = 'none'; // Hide no results message initially
-            let itemsToShow = ideaItems;
-
-            // 1. Filter by type (earn, lose, shop)
-            if (filterType !== 'all') {
-                itemsToShow = itemsToShow.filter(item => item.type === filterType);
-            }
-
-            // 2. Filter by search term (case-insensitive)
-            if (searchTerm) {
-                const lowerSearchTerm = searchTerm.toLowerCase();
-                itemsToShow = itemsToShow.filter(item =>
-                    item.description.toLowerCase().includes(lowerSearchTerm) ||
-                    (item.note && item.note.toLowerCase().includes(lowerSearchTerm)) ||
-                    (item.unit && item.unit.toLowerCase().includes(lowerSearchTerm)) ||
-                    (typeof item.amount === 'string' && item.amount.toLowerCase().includes(lowerSearchTerm))
-                );
-            }
-
-            if (itemsToShow.length === 0) {
-                noResultsDiv.style.display = 'block'; // Show no results message
-            } else {
-                 itemsToShow.forEach(item => {
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-
-                    const typeClass = `card-type-${item.type}`;
-                    const typeText = item.type.charAt(0).toUpperCase() + item.type.slice(1); // Capitalize
-
-                    card.innerHTML = `
-                        <div>
-                            <span class="card-type ${typeClass}">${typeText}</span>
-                            <p class="card-description">${item.description}</p>
-                            ${item.note ? `<p class="card-note">${item.note}</p>` : ''}
-                        </div>
-                        <div class="card-amount">${formatAmount(item)}</div>
-                    `;
-                    cardGrid.appendChild(card);
-                });
-            }
-        }
-
-        // --- Event Listeners ---
-
-        // Filter button clicks
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Update active button style
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                // Get filter type and current search term
-                const filterType = button.getAttribute('data-filter');
-                const searchTerm = searchBox.value;
-                renderCards(filterType, searchTerm);
-            });
-        });
-
-        // Search box input
-        searchBox.addEventListener('input', () => {
-            const searchTerm = searchBox.value;
-            // Find the currently active filter button
-            const activeFilterButton = document.querySelector('.filter-button.active');
-            const filterType = activeFilterButton ? activeFilterButton.getAttribute('data-filter') : 'all';
-            renderCards(filterType, searchTerm);
-        });
-
-        // --- Initial Render ---
-        // Render all cards when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCards(); // Render all initially
-        });
-
-    </script>
-
-</body>
-</html>
+    const cardGrid = document.getElementById('card-grid');
+    const filterButtons = document.querySelectorAll('.filter-button');
+    const searchBox = document.getElementById('search
