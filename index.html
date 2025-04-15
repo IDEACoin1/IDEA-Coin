@@ -244,7 +244,7 @@
         <button class="filter-button" data-filter="lose">How to Lose</button>
         <button class="filter-button" data-filter="shop">IDEA Shop</button>
       </div>
-      <div class="theme-toggle" id="theme-toggle"> Toggle Light/Dark Mode</div>
+      <div class="theme-toggle" id="theme-toggle">🌓 Toggle Light/Dark Mode</div>
     </div>
 
     <div id="item-count"></div>
@@ -260,4 +260,99 @@
 
     const cardGrid = document.getElementById('card-grid');
     const filterButtons = document.querySelectorAll('.filter-button');
-    const searchBox = document.getElementById('search
+    const searchBox = document.getElementById('search-box');
+    const noResultsDiv = document.getElementById('no-results');
+    const itemCount = document.getElementById('item-count');
+    const themeToggle = document.getElementById('theme-toggle');
+    const clickSound = document.getElementById('click-sound');
+    const symbol = 'i¢';
+
+    function formatAmount(item) {
+      if (typeof item.amount === 'number') {
+        let amountStr = `${item.amount}<span class="symbol">${symbol}</span>`;
+        if (item.unit && item.unit !== 'fine' && item.unit !== 'minimum' && item.unit !== '') {
+          if (['moment', 'week', 'assignment', 'speedrun', 'answer', 'bounty', 'point', 'class', '10 minutes', 'song', 'Meal', 'borrow', 'day', 'Switch', 'minute', 'lb', '10g', 'queue'].includes(item.unit)) {
+            amountStr += `/${item.unit}`;
+          } else if (item.unit === 'class or 10i¢/half hour') {
+            amountStr += `/class (or 10${symbol}/half hr)`;
+          } else if (item.unit === 'raise 1i¢') {
+            amountStr = `Formula`;
+          }
+        }
+        return amountStr;
+      }
+      return `${item.amount}`;
+    }
+
+    function renderCards(filterType = 'all', searchTerm = '') {
+      cardGrid.innerHTML = '';
+      noResultsDiv.style.display = 'none';
+      let itemsToShow = ideaItems;
+
+      if (filterType !== 'all') {
+        itemsToShow = itemsToShow.filter(item => item.type === filterType);
+      }
+
+      if (searchTerm) {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        itemsToShow = itemsToShow.filter(item =>
+          item.description.toLowerCase().includes(lowerSearchTerm) ||
+          (item.note && item.note.toLowerCase().includes(lowerSearchTerm)) ||
+          (item.unit && item.unit.toLowerCase().includes(lowerSearchTerm)) ||
+          (typeof item.amount === 'string' && item.amount.toLowerCase().includes(lowerSearchTerm))
+        );
+      }
+
+      itemCount.innerText = `${itemsToShow.length} item(s) found`;
+
+      if (itemsToShow.length === 0) {
+        noResultsDiv.style.display = 'block';
+      } else {
+        itemsToShow.forEach(item => {
+          const card = document.createElement('div');
+          card.classList.add('card');
+          const typeClass = `card-type-${item.type}`;
+          const typeText = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+          card.innerHTML = `
+            <div>
+              <span class="card-type ${typeClass}">${typeText}</span>
+              <p class="card-description">${item.description}</p>
+              ${item.note ? `<div class="card-note-tooltip">${item.note}</div>` : ''}
+            </div>
+            <div class="card-amount">${formatAmount(item)}</div>
+          `;
+          cardGrid.appendChild(card);
+        });
+      }
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        clickSound.currentTime = 0;
+        clickSound.play();
+
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        const filterType = button.getAttribute('data-filter');
+        const searchTerm = searchBox.value;
+        renderCards(filterType, searchTerm);
+      });
+    });
+
+    searchBox.addEventListener('input', () => {
+      const searchTerm = searchBox.value;
+      const activeFilterButton = document.querySelector('.filter-button.active');
+      const filterType = activeFilterButton ? activeFilterButton.getAttribute('data-filter') : 'all';
+      renderCards(filterType, searchTerm);
+    });
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCards();
+    });
+  </script>
+</body>
+</html>
