@@ -6,30 +6,20 @@
     <title>IDEA Coin Explore Page</title>
     <style>
         /* --- General Styles --- */
-        :root {
-            --background-color: #f4f7f6;
-            --text-color: #333;
-            --button-background-color: #fff;
-            --button-hover-background-color: #1abc9c;
-            --button-hover-text-color: #fff;
-            --card-background-color: #fff;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
+            background-color: #f4f7f6;
+            color: #333;
         }
 
         .container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background-color: var(--card-background-color);
+            background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
@@ -95,7 +85,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 6px;
             padding: 15px;
-            background-color: var(--card-background-color);
+            background-color: #fff;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             display: flex;
@@ -157,16 +147,6 @@
             grid-column: 1 / -1; /* Span full grid width if shown */
         }
 
-        /* --- Dark Mode --- */
-        body.dark-mode {
-            --background-color: #2c3e50;
-            --text-color: #ecf0f1;
-            --button-background-color: #34495e;
-            --button-hover-background-color: #16a085;
-            --button-hover-text-color: #ecf0f1;
-            --card-background-color: #34495e;
-        }
-
         /* --- Responsive Adjustments --- */
         @media (max-width: 600px) {
             .filter-controls {
@@ -192,25 +172,6 @@
             .card-grid {
                 grid-template-columns: 1fr; /* Stack cards vertically */
             }
-        }
-
-        /* --- Light/Dark Mode Button --- */
-        .theme-toggle-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: var(--button-background-color);
-            color: var(--text-color);
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .theme-toggle-button:hover {
-            background-color: var(--button-hover-background-color);
-            color: var(--button-hover-text-color);
         }
     </style>
 </head>
@@ -238,112 +199,126 @@
         <div id="no-results">No items match your filter criteria.</div>
     </div>
 
-    <!-- Light/Dark Mode Toggle Button -->
-    <button id="theme-toggle" class="theme-toggle-button">Switch to Dark Mode</button>
-
     <script>
         const ideaItems = [
-            // Items data here as you provided in the initial code...
+            // --- How to Earn ---
+            { type: 'earn', description: 'Exceptional Performance / Doing More Than is Asked of You', amount: 1, unit: 'moment' },
+            { type: 'earn', description: 'Helping Peers', amount: 1, unit: 'moment' },
+            { type: 'earn', description: 'Weekly Income', amount: 1, unit: 'week' },
+            { type: 'earn', description: 'Perfect Assignment Score', amount: 1, unit: 'assignment' },
+            { type: 'earn', description: 'Speedrun Leaderboard Top 10', amount: 1, unit: 'speedrun' },
+            { type: 'earn', description: 'Answering Questions Correctly', amount: 1, unit: 'answer' },
+            { type: 'earn', description: 'Bounty Hunting / Fine Reporting / Policing', amount: 1, unit: 'bounty' },
+            { type: 'earn', description: 'Improve IDEA Coin Infrastructure', amount: 1, unit: 'minimum', note: 'At least 1i¢' },
+            { type: 'earn', description: 'Debt Collection (unofficial)', amount: 'Varies', unit: '', note: 'Unofficial mechanism' },
+
+            // --- How to Lose ---
+            { type: 'lose', description: 'Using any device for non school purposes without exemption', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Innapropriate / Disruptive Talking / Arguing / Touching', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Out of Seat During attendance', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Unsafe in shop', amount: 2, unit: 'fine' },
+            { type: 'lose', description: 'Extended Bathroom Break', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Failure to Return Flash Drive', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Failure to Return Headphones', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Inappropriate Phone Use', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Crashing Out', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Brain Rot', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Gambling', amount: 2, unit: 'fine' },
+            { type: 'lose', description: 'Planting Evidence', amount: 2, unit: 'fine' },
+            { type: 'lose', description: 'Tampering With the IDEA Coin Mint (known suspect)', amount: 10, unit: 'fine' },
+            { type: 'lose', description: 'Tampering With the IDEA Coin Mint (unknown suspect)', amount: 1, unit: 'fine', note: 'Fine applies to everyone' },
+            { type: 'lose', description: 'Failure to Clean Up in Shop', amount: 2, unit: 'fine' },
+            { type: 'lose', description: 'Eating in Classroom', amount: 1, unit: 'fine' },
+            { type: 'lose', description: 'Leaving Mess in Classroom', amount: 2, unit: 'fine' },
+            { type: 'lose', description: 'Unprofessional Conduct', amount: 1, unit: 'fine' },
+
+            // --- IDEA Shop ---
+            { type: 'shop', description: 'Extra Credit', amount: 1, unit: 'point' },
+            { type: 'shop', description: 'Exemption from turning in phone', amount: 1, unit: 'class' },
+            { type: 'shop', description: 'TA Helper Time', amount: 1, unit: '10 minutes' },
+            { type: 'shop', description: 'Song Requests', amount: 1, unit: 'song' },
+            { type: 'shop', description: 'Lower someone\'s grade', amount: 10, unit: 'point' },
+            { type: 'shop', description: 'In-N-Out combo', amount: 250, unit: 'Meal' },
+            { type: 'shop', description: 'Games During Downtime', amount: 1, unit: 'Class' },
+            { type: 'shop', description: 'Borrow Flash Drive', amount: 1, unit: 'borrow' },
+            { type: 'shop', description: 'Classroom Lighting Changes', amount: 1, unit: 'class' },
+            { type: 'shop', description: 'Assignment Ext.', amount: 2, unit: 'day' },
+            { type: 'shop', description: 'Free Period', amount: 30, unit: 'class or 10i¢/half hour' },
+            { type: 'shop', description: 'Switch Seat', amount: 20, unit: 'Switch' },
+            { type: 'shop', description: 'Mr. Pina does your work', amount: 1, unit: 'minute' },
+            { type: 'shop', description: 'Rent Gamer Chair', amount: 1, unit: 'Class' },
+            { type: 'shop', description: 'Brand New Stock Material', amount: 2, unit: 'lb' },
+            { type: 'shop', description: 'HIPS 3D Printing Filament', amount: 1, unit: '10g' },
+            { type: 'shop', description: '3D Print Queue Priority', amount: 1, unit: 'queue' },
+            { type: 'shop', description: 'Raise Weekly Wage', amount: '100*current wage', unit: 'raise 1i¢', note: 'Formula: 100 * Current Wage i¢ to raise wage by 1i¢' },
+            { type: 'shop', description: 'Change Someone Else\'s Seat', amount: 20, unit: 'Switch' },
         ];
 
-        const cardGrid = document.getElementById('card-grid');
-        const filterButtons = document.querySelectorAll('.filter-button');
-        const searchBox = document.getElementById('search-box');
-        const noResultsDiv = document.getElementById('no-results');
-        const symbol = 'i¢'; // Define symbol
+        // Function to create cards dynamically
+        function createCard(item) {
+            const card = document.createElement('div');
+            card.classList.add('card');
 
-        // Light/Dark Mode toggle functionality
-        const themeToggleButton = document.getElementById('theme-toggle');
-        themeToggleButton.addEventListener('click', () => {
-            // Toggle dark mode on the body
-            document.body.classList.toggle('dark-mode');
-
-            // Update button text based on current theme
-            if (document.body.classList.contains('dark-mode')) {
-                themeToggleButton.textContent = 'Switch to Light Mode';
-            } else {
-                themeToggleButton.textContent = 'Switch to Dark Mode';
-            }
-        });
-
-        function formatAmount(item) {
-            if (typeof item.amount === 'number') {
-                let amountStr = `${item.amount}<span class="symbol">${symbol}</span>`;
-                if (item.unit && item.unit !== 'fine' && item.unit !== 'minimum' && item.unit !== '') {
-                    if (['moment', 'week', 'assignment', 'speedrun', 'answer', 'bounty', 'point', 'class', '10 minutes', 'song', 'Meal', 'borrow', 'day', 'Switch', 'minute', 'lb', '10g', 'queue'].includes(item.unit)) {
-                         amountStr += `/${item.unit}`;
-                    } else if (item.unit === 'class or 10i¢/half hour') {
-                        amountStr += `/class (or 10${symbol}/half hr)`; // Special formatting
-                    } else if (item.unit === 'raise 1i¢') {
-                        amountStr = `Formula`;
-                    }
-                }
-                 return amountStr;
-            }
-            return `${item.amount}`;
+            const typeClass = `card-type-${item.type}`;
+            card.innerHTML = `
+                <div class="card-type ${typeClass}">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</div>
+                <div class="card-description">${item.description}</div>
+                <div class="card-amount"><span class="symbol">i¢</span> ${item.amount} ${item.unit}</div>
+                ${item.note ? `<div class="card-note">${item.note}</div>` : ''}
+            `;
+            return card;
         }
 
-        function renderCards(filterType = 'all', searchTerm = '') {
-            cardGrid.innerHTML = ''; // Clear existing cards
-            noResultsDiv.style.display = 'none'; // Hide no results message initially
-            let itemsToShow = ideaItems;
+        // Function to render all items
+        function renderItems(filter = 'all') {
+            const grid = document.getElementById('card-grid');
+            grid.innerHTML = ''; // Clear the grid before rendering
 
-            if (filterType !== 'all') {
-                itemsToShow = itemsToShow.filter(item => item.type === filterType);
-            }
-
-            if (searchTerm) {
-                const lowerSearchTerm = searchTerm.toLowerCase();
-                itemsToShow = itemsToShow.filter(item =>
-                    item.description.toLowerCase().includes(lowerSearchTerm) ||
-                    (item.note && item.note.toLowerCase().includes(lowerSearchTerm)) ||
-                    (item.unit && item.unit.toLowerCase().includes(lowerSearchTerm)) ||
-                    (typeof item.amount === 'string' && item.amount.toLowerCase().includes(lowerSearchTerm))
-                );
-            }
-
-            if (itemsToShow.length === 0) {
-                noResultsDiv.style.display = 'block'; // Show no results message
+            const filteredItems = ideaItems.filter(item => filter === 'all' || item.type === filter);
+            
+            if (filteredItems.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
             } else {
-                itemsToShow.forEach(item => {
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-
-                    const typeClass = `card-type-${item.type}`;
-                    const typeText = item.type.charAt(0).toUpperCase() + item.type.slice(1); // Capitalize
-
-                    card.innerHTML = `
-                        <div>
-                            <span class="card-type ${typeClass}">${typeText}</span>
-                            <p class="card-description">${item.description}</p>
-                            ${item.note ? `<p class="card-note">${item.note}</p>` : ''}
-                        </div>
-                        <p class="card-amount">${formatAmount(item)}</p>
-                    `;
-                    cardGrid.appendChild(card);
+                document.getElementById('no-results').style.display = 'none';
+                filteredItems.forEach(item => {
+                    grid.appendChild(createCard(item));
                 });
             }
         }
 
-        // Filter buttons click event
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                filterButtons.forEach(btn => btn.classList.remove('active')); // Remove active class from all buttons
-                button.classList.add('active');
-                const filter = button.getAttribute('data-filter');
-                renderCards(filter, searchBox.value);
+        // Event listener for search box
+        document.getElementById('search-box').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const filteredItems = ideaItems.filter(item => 
+                item.description.toLowerCase().includes(query) || item.note?.toLowerCase().includes(query)
+            );
+
+            const grid = document.getElementById('card-grid');
+            grid.innerHTML = ''; // Clear grid
+
+            if (filteredItems.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+                filteredItems.forEach(item => {
+                    grid.appendChild(createCard(item));
+                });
+            }
+        });
+
+        // Event listeners for filter buttons
+        document.querySelectorAll('.filter-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                renderItems(this.dataset.filter);
             });
         });
 
-        // Search functionality
-        searchBox.addEventListener('input', () => {
-            const filterType = document.querySelector('.filter-button.active').getAttribute('data-filter');
-            renderCards(filterType, searchBox.value);
-        });
-
         // Initial render
-        renderCards();
+        renderItems();
     </script>
 
 </body>
 </html>
+
