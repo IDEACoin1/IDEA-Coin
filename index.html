@@ -13,6 +13,12 @@
             padding: 20px;
             background-color: #f4f7f6;
             color: #333;
+            transition: background-color 0.3s, color 0.3s; /* For dark mode transition */
+        }
+
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #f5f5f5;
         }
 
         .container {
@@ -22,11 +28,22 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s; /* For dark mode transition */
+        }
+
+        .container.dark-mode {
+            background-color: #2c2c2c;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
 
         h1, h2 {
             text-align: center;
             color: #2c3e50;
+            transition: color 0.3s; /* For dark mode transition */
+        }
+
+        h1.dark-mode, h2.dark-mode {
+            color: #e0e0e0;
         }
 
         h1 .symbol {
@@ -35,17 +52,71 @@
             font-size: 1.2em;
         }
 
+        h1.dark-mode .symbol {
+            color: #6ee7b7; /* Lighter teal for dark mode */
+        }
+
+        /* --- Dark/Light Mode Toggle --- */
+        .toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .toggle-checkbox {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .toggle-label {
+            display: block;
+            width: 60px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-label:after {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            width: 26px;
+            height: 26px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #1abc9c;
+        }
+
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(30px);
+        }
+
         /* --- Filter Controls --- */
         .filter-controls {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid #eee;
+            transition: border-bottom-color 0.3s; /* For dark mode transition */
+        }
+
+        .filter-controls.dark-mode {
+            border-bottom-color: #555;
         }
 
         .filter-controls label {
             margin-right: 10px;
             font-weight: bold;
+            color: inherit; /* Inherit text color from body */
         }
 
         .filter-controls input[type="text"] {
@@ -54,6 +125,15 @@
             border-radius: 4px;
             margin-right: 20px;
             min-width: 200px;
+            background-color: #fff;
+            color: #333;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s; /* For dark mode transition */
+        }
+
+        .filter-controls.dark-mode input[type="text"] {
+            background-color: #444;
+            color: #f5f5f5;
+            border-color: #777;
         }
 
         .filter-button {
@@ -64,13 +144,25 @@
             background-color: #fff;
             color: #1abc9c;
             border-radius: 4px;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        .filter-button.dark-mode {
+            background-color: #333;
+            color: #6ee7b7;
+            border-color: #6ee7b7;
         }
 
         .filter-button:hover,
         .filter-button.active {
             background-color: #1abc9c;
             color: #fff;
+        }
+
+        .filter-button.dark-mode:hover,
+        .filter-button.dark-mode.active {
+            background-color: #6ee7b7;
+            color: #1a1a1a;
         }
 
         /* --- Card Grid --- */
@@ -87,15 +179,25 @@
             padding: 15px;
             background-color: #fff;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s, border-color 0.3s;
             display: flex;
             flex-direction: column;
             justify-content: space-between; /* Pushes amount to bottom */
         }
 
+        .card.dark-mode {
+            background-color: #333;
+            border-color: #555;
+            box-shadow: 0 1px 4px rgba(255, 255, 255, 0.05);
+        }
+
         .card:hover {
             transform: translateY(-3px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card.dark-mode:hover {
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
         }
 
         .card-type {
@@ -107,16 +209,22 @@
             display: inline-block; /* So it doesn't take full width */
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            color: inherit; /* Inherit text color from body */
         }
 
         .card-type-earn { background-color: #e8f8f5; color: #1abc9c; }
         .card-type-lose { background-color: #fdedec; color: #e74c3c; }
         .card-type-shop { background-color: #ebf5fb; color: #3498db; }
 
+        .card.dark-mode .card-type-earn { background-color: #386659; color: #6ee7b7; }
+        .card.dark-mode .card-type-lose { background-color: #62322e; color: #fca5a5; }
+        .card.dark-mode .card-type-shop { background-color: #375568; color: #93c5fd; }
+
         .card-description {
             flex-grow: 1; /* Takes available space */
             margin-bottom: 10px;
             font-size: 0.95em;
+            color: inherit; /* Inherit text color from body */
         }
 
         .card-amount {
@@ -124,6 +232,11 @@
             font-size: 1.1em;
             color: #2c3e50;
             text-align: right; /* Align amount to the right */
+            transition: color 0.3s; /* For dark mode transition */
+        }
+
+        .card.dark-mode .card-amount {
+            color: #e0e0e0;
         }
 
         .card-amount .symbol {
@@ -131,11 +244,20 @@
             font-weight: bold;
         }
 
+        .card.dark-mode .card-amount .symbol {
+            color: #6ee7b7;
+        }
+
         .card-note {
             font-size: 0.8em;
             color: #7f8c8d;
             margin-top: 5px;
             font-style: italic;
+            transition: color 0.3s; /* For dark mode transition */
+        }
+
+        .card.dark-mode .card-note {
+            color: #bbb;
         }
 
         /* --- No Results Message --- */
@@ -145,6 +267,11 @@
             color: #7f8c8d;
             display: none; /* Hidden by default */
             grid-column: 1 / -1; /* Span full grid width if shown */
+            transition: color 0.3s; /* For dark mode transition */
+        }
+
+        #no-results.dark-mode {
+            color: #bbb;
         }
 
         /* --- Responsive Adjustments --- */
@@ -160,10 +287,10 @@
                 width: auto; /* Take full width */
             }
             .filter-controls div { /* Container for buttons */
-                 display: flex;
-                 justify-content: center;
-                 flex-wrap: wrap; /* Wrap buttons if needed */
-                 gap: 5px;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap; /* Wrap buttons if needed */
+                gap: 5px;
             }
             .filter-button {
                 flex-grow: 1; /* Allow buttons to grow */
@@ -177,6 +304,11 @@
 </head>
 <body>
 
+    <div class="toggle-container">
+        <input type="checkbox" id="dark-mode-toggle" class="toggle-checkbox">
+        <label for="dark-mode-toggle" class="toggle-label"></label>
+    </div>
+
     <div class="container">
         <h1>Welcome to the IDEA Coin <span class="symbol">i¢</span> Explore Page!</h1>
         <p style="text-align: center;">Discover how to earn, potential fines, and what you can spend your hard-earned IDEA Coins on.</p>
@@ -184,8 +316,7 @@
         <div class="filter-controls">
             <label for="search-box">Search:</label>
             <input type="text" id="search-box" placeholder="Filter items...">
-            <div> <!-- Button Group -->
-                <button class="filter-button active" data-filter="all">Show All</button>
+            <div> <button class="filter-button active" data-filter="all">Show All</button>
                 <button class="filter-button" data-filter="earn">How to Earn</button>
                 <button class="filter-button" data-filter="lose">How to Lose</button>
                 <button class="filter-button" data-filter="shop">IDEA Shop</button>
@@ -194,8 +325,7 @@
 
         <h2>Explore Items</h2>
         <div class="card-grid" id="card-grid">
-            <!-- Cards will be dynamically inserted here by JavaScript -->
-        </div>
+            </div>
         <div id="no-results">No items match your filter criteria.</div>
     </div>
 
